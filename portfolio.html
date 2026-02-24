@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yusof Sadat Fakhr — Backend Developer</title>
+<!-- Farsi: Vazirmatn bold | EN display: Playfair Display | EN mono: DM Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f0ede8;
+    --muted: #666;
+    --accent: #c8b89a;
+    --border: #1e1e1e;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Vazirmatn', sans-serif;
+    --display-en: 'Playfair Display', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-weight: 500;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* English mode: use Playfair for headings, DM Mono for labels */
+  [dir="ltr"] h1, [dir="ltr"] h2, [dir="ltr"] .about-left h2,
+  [dir="ltr"] .contact-left h2 {
+    font-family: var(--display-en) !important;
+    font-weight: 900 !important;
+    font-style: italic;
+    letter-spacing: -0.02em !important;
+  }
+
+  [dir="ltr"] body {
+    font-family: var(--display-en);
+    font-weight: 400;
+  }
+
+  [dir="ltr"] .nav-logo, [dir="ltr"] .nav-links a,
+  [dir="ltr"] .hero-eyebrow, [dir="ltr"] .section-label,
+  [dir="ltr"] .section-number, [dir="ltr"] .role-num,
+  [dir="ltr"] .project-year, [dir="ltr"] .skill-group-title,
+  [dir="ltr"] .col-title, [dir="ltr"] .entry-year,
+  [dir="ltr"] .stat-label, [dir="ltr"] .tag, [dir="ltr"] .tech-pill,
+  [dir="ltr"] .footer-copy, [dir="ltr"] .footer-link,
+  [dir="ltr"] .lang-toggle, [dir="ltr"] .form-label,
+  [dir="ltr"] .hero-cta, [dir="ltr"] .form-submit,
+  [dir="ltr"] .scroll-indicator, [dir="ltr"] .marquee-item,
+  [dir="ltr"] .skill-pct, [dir="ltr"] .stat-num, [dir="ltr"] .ci-label {
+    font-family: var(--mono) !important;
+  }
+
+  [dir="ltr"] p, [dir="ltr"] .hero-desc, [dir="ltr"] .project-desc,
+  [dir="ltr"] .gen-desc, [dir="ltr"] .entry-desc, [dir="ltr"] .entry-sub,
+  [dir="ltr"] .role-item, [dir="ltr"] .project-name {
+    font-family: var(--display-en);
+    font-weight: 400;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.3s ease, width 0.3s, height 0.3s;
+    mix-blend-mode: difference;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    mix-blend-mode: normal;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--fg); }
+
+  .lang-toggle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.3rem 0.7rem;
+    cursor: none;
+    transition: all 0.3s;
+  }
+
+  .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Hero */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-left {
+    padding: 10rem 3rem 5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-left: 1px solid var(--border);
+  }
+
+  .hero-right {
+    padding: 10rem 3rem 5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 900;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 380px;
+    line-height: 1.8;
+  }
+
+  .hero-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .role-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .role-item:hover { color: var(--fg); }
+
+  .role-num {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--fg);
+    padding: 0.8rem 1.8rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    width: fit-content;
+  }
+
+  .hero-cta:hover { background: var(--accent); }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: scrollDown 1.5s ease infinite;
+  }
+
+  @keyframes scrollDown {
+    0% { top: -100%; }
+    100% { top: 100%; }
+  }
+
+  /* Section base */
+  section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    padding: 1.5rem 3rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-left: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-number {
+    color: var(--accent);
+  }
+
+  .section-title {
+    padding: 1.5rem 3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+  }
+
+  /* About */
+  #about .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-left {
+    padding: 5rem 3rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .about-left h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .about-left h2 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 900;
+  }
+
+  .about-left p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-right {
+    padding: 5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .stat-item {
+    padding: 2rem;
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+  }
+
+  .stat-item:nth-child(odd) { border-left: none; }
+
+  .stat-num {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    font-family: var(--mono);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    font-family: var(--mono);
+  }
+
+  /* Marquee */
+  .marquee-section {
+    overflow: hidden;
+    padding: 1.2rem 0;
+    background: var(--accent);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee-item {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  .marquee-dot { width: 4px; height: 4px; background: var(--bg); border-radius: 50%; }
+
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Projects */
+  #projects .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .project-card {
+    border-left: 1px solid var(--border);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    transition: background 0.3s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card:first-child { border-left: none; }
+
+  .project-card:hover { background: #111; }
+
+  .project-year {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+
+  .project-img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    filter: grayscale(60%);
+    transition: filter 0.4s;
+  }
+
+  .project-card:hover .project-img { filter: grayscale(0%); }
+
+  .project-name {
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  .project-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.6rem;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .project-card:hover .tag { border-color: var(--accent); color: var(--accent); }
+
+  .project-arrow {
+    font-size: 1.2rem;
+    color: var(--muted);
+    align-self: flex-end;
+    transition: transform 0.3s, color 0.3s;
+  }
+
+  .project-card:hover .project-arrow { transform: translate(4px, -4px); color: var(--accent); }
+
+  /* Skills */
+  #skills .skills-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .skills-left {
+    padding: 5rem 3rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .skills-right {
+    padding: 5rem 3rem;
+  }
+
+  .skill-group-title {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+  }
+
+  .skill-bar-item {
+    margin-bottom: 1.8rem;
+  }
+
+  .skill-bar-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-name {
+    font-size: 0.85rem;
+    color: var(--fg);
+  }
+
+  .skill-pct {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .skill-track {
+    height: 1px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: var(--accent);
+    position: absolute;
+    top: 0; left: 0;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Tech stack pills */
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .tech-pill {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .tech-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,184,154,0.05); }
+
+  /* Education & Achievements */
+  #edu-ach .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .edu-col {
+    padding: 5rem 3rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .ach-col {
+    padding: 5rem 3rem;
+  }
+
+  .col-title {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+  }
+
+  .edu-entry, .ach-entry {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .entry-year {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .entry-title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  .entry-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .entry-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* General Skills */
+  #general .content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .gen-card {
+    padding: 3rem 2.5rem;
+    border-left: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+
+  .gen-card:first-child { border-left: none; }
+  .gen-card:hover { background: #111; }
+
+  .gen-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .gen-title {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .gen-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Contact */
+  #contact .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-left {
+    padding: 6rem 3rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .contact-left h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-left h2 em { font-style: italic; color: var(--accent); font-weight: 900; }
+
+  .contact-left p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-info-list { list-style: none; }
+
+  .contact-info-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .contact-info-list .ci-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    min-width: 70px;
+  }
+
+  .contact-right {
+    padding: 6rem 3rem;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .form-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .form-input, .form-textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 0;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+
+  .form-input:focus, .form-textarea:focus { border-bottom-color: var(--accent); }
+
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); font-size: 0.85rem; }
+
+  .form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--fg);
+    color: var(--bg);
+    border: none;
+    padding: 1rem 2rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s;
+    margin-top: 0.5rem;
+    width: fit-content;
+  }
+
+  .form-submit:hover { background: var(--accent); }
+
+  /* Footer */
+  footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-name {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+  }
+
+  .footer-link {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover { color: var(--accent); }
+
+  /* Animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---- Google Calendar Meeting Modal ---- */
+  .meeting-btn {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.85rem 1.4rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(200,184,154,0.25);
+    font-weight: 700;
+    animation: pulse-btn 3s ease infinite;
+  }
+
+  @keyframes pulse-btn {
+    0%, 100% { box-shadow: 0 8px 32px rgba(200,184,154,0.25); }
+    50% { box-shadow: 0 8px 48px rgba(200,184,154,0.45); }
+  }
+
+  [dir="ltr"] .meeting-btn { left: auto; right: 2rem; }
+
+  .meeting-btn:hover { background: var(--fg); transform: translateY(-2px); animation: none; }
+
+  .meeting-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+
+  .modal {
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    width: 100%;
+    max-width: 520px;
+    padding: 3rem;
+    position: relative;
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-close {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1rem;
+    cursor: none;
+    transition: color 0.2s;
+    font-family: var(--mono);
+    line-height: 1;
+  }
+
+  [dir="ltr"] .modal-close { left: auto; right: 1.5rem; }
+  .modal-close:hover { color: var(--fg); }
+
+  .modal-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .modal-eyebrow::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .modal h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+    line-height: 1.1;
+  }
+
+  [dir="ltr"] .modal h3 {
+    font-family: var(--display-en) !important;
+    font-style: italic;
+  }
+
+  .modal-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+
+  .time-slots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .time-slot {
+    border: 1px solid var(--border);
+    padding: 0.7rem 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    cursor: none;
+    transition: all 0.2s;
+    text-align: center;
+    background: none;
+  }
+
+  .time-slot:hover, .time-slot.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200,184,154,0.06);
+  }
+
+  .meeting-form-inner { display: flex; flex-direction: column; gap: 1rem; }
+
+  .meeting-form-inner .form-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0.7rem 0;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+
+  .meeting-form-inner .form-input:focus { border-bottom-color: var(--accent); }
+
+  .meeting-form-inner .form-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .gcal-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    background: var(--fg);
+    color: var(--bg);
+    border: none;
+    padding: 0.9rem 2rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s;
+    text-decoration: none;
+    margin-top: 0.8rem;
+    font-weight: 700;
+    width: 100%;
+  }
+
+  .gcal-link:hover { background: var(--accent); }
+
+  .gcal-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+
+    #hero { grid-template-columns: 1fr; }
+    .hero-left, .hero-right { padding: 6rem 1.5rem 3rem; border: none; }
+
+    .section-header { grid-template-columns: 1fr; }
+    .section-label { border-left: none; }
+
+    #about .content, #skills .skills-content, #edu-ach .content, #contact .content {
+      grid-template-columns: 1fr;
+    }
+
+    .about-left, .about-right, .skills-left, .skills-right,
+    .edu-col, .ach-col, .contact-left, .contact-right {
+      padding: 3rem 1.5rem;
+      border: none;
+    }
+
+    #projects .projects-grid { grid-template-columns: 1fr; }
+    .project-card { border-left: none; border-top: 1px solid var(--border); }
+    .project-card:first-child { border-top: none; }
+
+    #general .content { grid-template-columns: 1fr 1fr; }
+    .gen-card { padding: 2rem 1.5rem; }
+
+    footer { grid-template-columns: 1fr; gap: 1.5rem; }
+    .footer-right { justify-content: flex-start; flex-wrap: wrap; }
+
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo" data-fa="یوسف سادات فخر" data-en="Yusof Sadat Fakhr">یوسف سادات فخر</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-fa="درباره من" data-en="About">درباره من</a></li>
+    <li><a href="#projects" data-fa="پروژه‌ها" data-en="Projects">پروژه‌ها</a></li>
+    <li><a href="#skills" data-fa="مهارت‌ها" data-en="Skills">مهارت‌ها</a></li>
+    <li><a href="#contact" data-fa="تماس" data-en="Contact">تماس</a></li>
+  </ul>
+  <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span data-fa="مشهد، ایران" data-en="Mashhad, Iran">مشهد، ایران</span>
+      <span>V1.0</span>
+    </div>
+    <h1>
+      <span data-fa="یوسف<br><em>سادات فخر</em>" data-en="Yusof<br><em>Sadat Fakhr</em>">یوسف<br><em>سادات فخر</em></span>
+    </h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-desc" data-fa="توسعه‌دهنده بک‌اند و فول‌استک با تمرکز بر ساخت اپلیکیشن‌های مدرن، کارآمد و کاربرپسند با Laravel و PHP." data-en="Backend & Full-Stack developer focused on building modern, efficient, and user-friendly applications with Laravel and PHP.">
+      توسعه‌دهنده بک‌اند و فول‌استک با تمرکز بر ساخت اپلیکیشن‌های مدرن، کارآمد و کاربرپسند با Laravel و PHP.
+    </p>
+    <div class="hero-roles">
+      <div class="role-item"><span class="role-num">01</span> <span data-fa="توسعه‌دهنده بک‌اند" data-en="Backend Developer">توسعه‌دهنده بک‌اند</span></div>
+      <div class="role-item"><span class="role-num">02</span> <span data-fa="توسعه‌دهنده فول‌استک" data-en="Full-Stack Developer">توسعه‌دهنده فول‌استک</span></div>
+      <div class="role-item"><span class="role-num">03</span> <span data-fa="معمار نرم‌افزار" data-en="Software architecture">معمار نرم افزار</span></div>
+    </div>
+    <a href="#contact" class="hero-cta" data-fa="تماس با من ↗" data-en="Get in touch ↗">تماس با من ↗</a>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span data-fa="اسکرول" data-en="Scroll">اسکرول</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee">
+    <span class="marquee-item">Laravel <span class="marquee-dot"></span></span>
+    <span class="marquee-item">PHP <span class="marquee-dot"></span></span>
+    <span class="marquee-item">MySQL <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Filament <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Livewire <span class="marquee-dot"></span></span>
+    <span class="marquee-item">HTML/CSS <span class="marquee-dot"></span></span>
+    <span class="marquee-item">JavaScript <span class="marquee-dot"></span></span>
+    <span class="marquee-item">React <span class="marquee-dot"></span></span>
+    <span class="marquee-item">OOP <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Design Patterns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Algorithms <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Laravel <span class="marquee-dot"></span></span>
+    <span class="marquee-item">PHP <span class="marquee-dot"></span></span>
+    <span class="marquee-item">MySQL <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Filament <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Livewire <span class="marquee-dot"></span></span>
+    <span class="marquee-item">HTML/CSS <span class="marquee-dot"></span></span>
+    <span class="marquee-item">JavaScript <span class="marquee-dot"></span></span>
+    <span class="marquee-item">React <span class="marquee-dot"></span></span>
+    <span class="marquee-item">OOP <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Design Patterns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Algorithms <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <div class="section-title" data-fa="معرفی — یوسف سادات فخر" data-en="About — Yusof Sadat Fakhr">معرفی — یوسف سادات فخر</div>
+    <div class="section-label"><span class="section-number">01</span> <span data-fa="درباره من" data-en="About Me">درباره من</span></div>
+  </div>
+  <div class="content">
+    <div class="about-left reveal">
+      <h2 data-fa="یک توسعه‌دهنده<br><em>با اشتیاق</em>" data-en="A passionate<br><em>developer</em>">یک توسعه‌دهنده<br><em>با اشتیاق</em></h2>
+      <p data-fa="با بیش از ۱ سال تجربه در توسعه وب، تخصص من در ساخت اپلیکیشن‌های مدرن و کاربرپسند است. فارغ‌التحصیل مهندسی کامپیوتر از دانشگاه بین‌المللی امام رضا." data-en="With over 1 year of experience in web development, I specialize in building modern and user-friendly applications. Graduate of Computer Engineering from Imam Reza International University.">با بیش از ۱ سال تجربه در توسعه وب، تخصص من در ساخت اپلیکیشن‌های مدرن و کاربرپسند است. فارغ‌التحصیل مهندسی کامپیوتر از دانشگاه بین‌المللی امام رضا.</p>
+      <p data-fa="تمرکز من بر روی کیفیت کد، تجربه کاربری عالی و بهینه‌سازی عملکرد است. به‌دنبال فرصت‌های چالش‌برانگیز برای رشد و همکاری در پروژه‌های نوآورانه هستم." data-en="My focus is on code quality, excellent user experience, and performance optimization. I'm looking for challenging opportunities to grow and collaborate on innovative projects.">تمرکز من بر روی کیفیت کد، تجربه کاربری عالی و بهینه‌سازی عملکرد است. به‌دنبال فرصت‌های چالش‌برانگیز برای رشد و همکاری در پروژه‌های نوآورانه هستم.</p>
+    </div>
+    <div class="about-right reveal">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num">1+</div>
+          <div class="stat-label" data-fa="سال تجربه" data-en="Years Exp.">سال تجربه</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3+</div>
+          <div class="stat-label" data-fa="پروژه موفق" data-en="Projects">پروژه موفق</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">26</div>
+          <div class="stat-label" data-fa="رتبه ACM" data-en="ACM Rank">رتبه ACM</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2+</div>
+          <div class="stat-label" data-fa="مشتری راضی" data-en="Happy Clients">مشتری راضی</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <div class="section-title" data-fa="کارهای اخیر — نمونه پروژه‌ها" data-en="Recent Work — Selected Projects">کارهای اخیر — نمونه پروژه‌ها</div>
+    <div class="section-label"><span class="section-number">02</span> <span data-fa="پروژه‌ها" data-en="Projects">پروژه‌ها</span></div>
+  </div>
+  <div class="projects-grid">
+    <a href="https://github.com/yusofsf/DeliciousFood" target="_blank" class="project-card reveal">
+      <div class="project-year">2024</div>
+      <img class="project-img" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop" alt="Restaurant">
+      <div class="project-name" data-fa="سیستم مدیریت رستوران" data-en="Restaurant Management">سیستم مدیریت رستوران</div>
+      <div class="project-desc" data-fa="یک سیستم کامل مدیریت رستوران آنلاین با Laravel و Blade" data-en="A complete online restaurant management system built with Laravel and Blade">یک سیستم کامل مدیریت رستوران آنلاین با Laravel و Blade</div>
+      <div class="project-tags">
+        <span class="tag">Laravel</span>
+        <span class="tag">Blade</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">Mail</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+    <a href="https://github.com/yusofsf/ParkingSystem" target="_blank" class="project-card reveal">
+      <div class="project-year">2024</div>
+      <img class="project-img" src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=600&h=400&fit=crop" alt="Parking">
+      <div class="project-name" data-fa="سیستم مدیریت پارکینگ" data-en="Parking Management">سیستم مدیریت پارکینگ</div>
+      <div class="project-desc" data-fa="یک سیستم کامل مدیریت پارکینگ آنلاین با Laravel و Blade" data-en="A complete online parking management system built with Laravel and Blade">یک سیستم کامل مدیریت پارکینگ آنلاین با Laravel و Blade</div>
+      <div class="project-tags">
+        <span class="tag">Laravel</span>
+        <span class="tag">Blade</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">DI</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+    <a href="https://github.com/yusofsf/DoctoreMan" target="_blank" class="project-card reveal">
+      <div class="project-year">2024</div>
+      <img class="project-img" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop" alt="Doctor">
+      <div class="project-name" data-fa="سیستم نوبت‌دهی پزشکی" data-en="Doctor Appointment">سیستم نوبت‌دهی پزشکی</div>
+      <div class="project-desc" data-fa="یک سیستم کامل مدیریت نوبت‌دهی پزشکی با Laravel و Filament" data-en="A complete doctor appointment management system built with Laravel and Filament">یک سیستم کامل مدیریت نوبت‌دهی پزشکی با Laravel و Filament</div>
+      <div class="project-tags">
+        <span class="tag">Laravel</span>
+        <span class="tag">Filament</span>
+        <span class="tag">Livewire</span>
+        <span class="tag">SQLite</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-title" data-fa="تخصص‌ها و ابزارها" data-en="Expertise & Tools">تخصص‌ها و ابزارها</div>
+    <div class="section-label"><span class="section-number">03</span> <span data-fa="مهارت‌ها" data-en="Skills">مهارت‌ها</span></div>
+  </div>
+  <div class="skills-content">
+    <div class="skills-left reveal">
+      <div class="skill-group-title" data-fa="فرانت‌اند" data-en="Frontend">فرانت‌اند</div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">HTML / CSS</span><span class="skill-pct">70%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="70%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">JavaScript</span><span class="skill-pct">60%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="60%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">React</span><span class="skill-pct">40%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="40%"></div></div>
+      </div>
+    </div>
+    <div class="skills-right reveal">
+      <div class="skill-group-title" data-fa="بک‌اند" data-en="Backend">بک‌اند</div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">PHP / Laravel</span><span class="skill-pct">70%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="70%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">MySQL</span><span class="skill-pct">65%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="65%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">OOP</span><span class="skill-pct">50%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="50%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">Design Patterns</span><span class="skill-pct">50%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="50%"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-top"><span class="skill-name">Algorithms</span><span class="skill-pct">40%</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:0%" data-width="40%"></div></div>
+      </div>
+
+      <div class="skill-group-title" style="margin-top:3rem;" data-fa="استک فنی" data-en="Tech Stack">استک فنی</div>
+      <div class="tech-grid">
+        <span class="tech-pill">&gt;Laravel&lt;</span>
+        <span class="tech-pill">&gt;PHP&lt;</span>
+        <span class="tech-pill">&gt;MySQL&lt;</span>
+        <span class="tech-pill">&gt;Filament&lt;</span>
+        <span class="tech-pill">&gt;Livewire&lt;</span>
+        <span class="tech-pill">&gt;React&lt;</span>
+        <span class="tech-pill">&gt;HTML/CSS&lt;</span>
+        <span class="tech-pill">&gt;JavaScript&lt;</span>
+        <span class="tech-pill">&gt;Git&lt;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GENERAL SKILLS -->
+<section id="general">
+  <div class="section-header">
+    <div class="section-title" data-fa="توانایی‌های نرم" data-en="Soft Skills">توانایی‌های نرم</div>
+    <div class="section-label"><span class="section-number">04</span> <span data-fa="توانایی‌های عمومی" data-en="General Skills">توانایی‌های عمومی</span></div>
+  </div>
+  <div class="content">
+    <div class="gen-card reveal">
+      <span class="gen-icon">◈</span>
+      <div class="gen-title" data-fa="کار تیمی" data-en="Teamwork">کار تیمی</div>
+      <div class="gen-desc" data-fa="همکاری موثر با تیم‌های چندگانه و ارتباط سازنده" data-en="Effective collaboration with multiple teams and constructive communication">همکاری موثر با تیم‌های چندگانه و ارتباط سازنده</div>
+    </div>
+    <div class="gen-card reveal">
+      <span class="gen-icon">◉</span>
+      <div class="gen-title" data-fa="حل مسئله" data-en="Problem Solving">حل مسئله</div>
+      <div class="gen-desc" data-fa="تفکر تحلیلی و خلاقانه برای رویارویی با چالش‌های پیچیده" data-en="Analytical and creative thinking to face complex challenges">تفکر تحلیلی و خلاقانه برای رویارویی با چالش‌های پیچیده</div>
+    </div>
+    <div class="gen-card reveal">
+      <span class="gen-icon">◎</span>
+      <div class="gen-title" data-fa="ارتباط موثر" data-en="Communication">ارتباط موثر</div>
+      <div class="gen-desc" data-fa="مهارت‌های ارتباطی قوی در محیط‌های حرفه‌ای" data-en="Strong communication skills in professional environments">مهارت‌های ارتباطی قوی در محیط‌های حرفه‌ای</div>
+    </div>
+    <div class="gen-card reveal">
+      <span class="gen-icon">◇</span>
+      <div class="gen-title" data-fa="مدیریت زمان" data-en="Time Management">مدیریت زمان</div>
+      <div class="gen-desc" data-fa="اولویت‌بندی وظایف و برنامه‌ریزی دقیق برای رسیدن به اهداف" data-en="Task prioritization and precise planning to achieve goals">اولویت‌بندی وظایف و برنامه‌ریزی دقیق برای رسیدن به اهداف</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDU & ACHIEVEMENTS -->
+<section id="edu-ach">
+  <div class="section-header">
+    <div class="section-title" data-fa="تحصیلات و افتخارات" data-en="Education & Achievements">تحصیلات و افتخارات</div>
+    <div class="section-label"><span class="section-number">05</span> <span data-fa="سوابق" data-en="Background">سوابق</span></div>
+  </div>
+  <div class="content">
+    <div class="edu-col reveal">
+      <div class="col-title" data-fa="تحصیلات" data-en="Education">تحصیلات</div>
+      <div class="edu-entry">
+        <div class="entry-year">2020 — 2024</div>
+        <div class="entry-title" data-fa="کارشناسی مهندسی کامپیوتر" data-en="B.Sc. Computer Engineering">کارشناسی مهندسی کامپیوتر</div>
+        <div class="entry-sub" data-fa="دانشگاه بین‌المللی امام رضا" data-en="Imam Reza International University">دانشگاه بین‌المللی امام رضا</div>
+        <div class="entry-desc" data-fa="تمرکز بر توسعه نرم‌افزار، پایگاه داده و معماری نرم‌افزار" data-en="Focused on software development, databases, and software architecture">تمرکز بر توسعه نرم‌افزار، پایگاه داده و معماری نرم‌افزار</div>
+      </div>
+    </div>
+    <div class="ach-col reveal">
+      <div class="col-title" data-fa="موفقیت‌ها" data-en="Achievements">موفقیت‌ها</div>
+      <div class="ach-entry">
+        <div class="entry-year">2018</div>
+        <div class="entry-title" data-fa="رتبه ۲۶ مسابقه برنامه‌نویسی" data-en="26th Place — Programming Contest">رتبه ۲۶ مسابقه برنامه‌نویسی</div>
+        <div class="entry-sub" data-fa="مسابقات ملی ACM" data-en="National ACM Competition">مسابقات ملی ACM</div>
+      </div>
+      <div class="ach-entry">
+        <div class="entry-year">2016</div>
+        <div class="entry-title" data-fa="گواهینامه PHP و MySQL" data-en="PHP & MySQL Certificate">گواهینامه PHP و MySQL</div>
+        <div class="entry-sub" data-fa="موسسه فنی تهران" data-en="Tehran Technical Institute">موسسه فنی تهران</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-title" data-fa="آماده همکاری در پروژه‌های جدید" data-en="Ready to collaborate on new projects">آماده همکاری در پروژه‌های جدید</div>
+    <div class="section-label"><span class="section-number">06</span> <span data-fa="تماس" data-en="Contact">تماس</span></div>
+  </div>
+  <div class="content">
+    <div class="contact-left reveal">
+      <h2 data-fa="بیایید با<br>هم <em>کار کنیم</em>" data-en="Let's work<br><em>together</em>">بیایید با<br>هم <em>کار کنیم</em></h2>
+      <p data-fa="آماده همکاری در پروژه‌های جدید و چالش‌برانگیز هستم. از طریق ایمیل یا فرم تماس با من در ارتباط باشید." data-en="Ready to collaborate on new and challenging projects. Get in touch via email or the contact form.">آماده همکاری در پروژه‌های جدید و چالش‌برانگیز هستم. از طریق ایمیل یا فرم تماس با من در ارتباط باشید.</p>
+      <ul class="contact-info-list">
+        <li>
+          <span class="ci-label" data-fa="ایمیل" data-en="Email">ایمیل</span>
+          <span><a>yusofsadat@gmail.com</a></span>
+        </li>
+        <li>
+          <span class="ci-label" data-fa="تلفن" data-en="Phone">تلفن</span>
+          <span dir="ltr">+98 919 154 6136</span>
+        </li>
+        <li>
+          <span class="ci-label" data-fa="موقعیت" data-en="Location">موقعیت</span>
+          <span data-fa="مشهد، ایران" data-en="Mashhad, Iran">مشهد، ایران</span>
+        </li>
+        <li>
+          <span class="ci-label">GitHub</span>
+          <a href="https://github.com/yusofsf" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">github.com/yusofsf</a>
+        </li>
+        <li>
+          <span class="ci-label">LinkedIn</span>
+          <a href="https://linkedin.com/in/yusof-sadat-fakhr" target="_blank" style="color:var(--muted);text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">yusof-sadat-fakhr</a>
+        </li>
+      </ul>
+    </div>
+    <div class="contact-right reveal">
+      <form class="contact-form" action="https://formspree.io/f/xzdaknkn" method="POST">
+        <div class="form-group">
+          <label class="form-label" data-fa="نام و نام خانوادگی" data-en="Full Name">نام و نام خانوادگی</label>
+          <input type="text" name="name" required class="form-input" placeholder="" data-placeholder-fa="نام خود را وارد کنید" data-placeholder-en="Enter your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-fa="ایمیل" data-en="Email">ایمیل</label>
+          <input type="email" name="_replyto" required class="form-input" placeholder="" data-placeholder-fa="ایمیل خود را وارد کنید" data-placeholder-en="Enter your email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-fa="پیام" data-en="Message">پیام</label>
+          <textarea rows="5" name="message" required class="form-textarea" placeholder="" data-placeholder-fa="پیام خود را بنویسید..." data-placeholder-en="Write your message..."></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="پیام جدید از پورتفولیو">
+        <button type="submit" class="form-submit">
+          <span data-fa="ارسال پیام" data-en="Send Message">ارسال پیام</span> ↗
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Meeting Button -->
+<button class="meeting-btn" onclick="openMeeting()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+  <span data-fa="رزرو میتینگ" data-en="Schedule Meeting">رزرو میتینگ</span>
+</button>
+
+<!-- Meeting Modal -->
+<div class="modal-overlay" id="meetingModal" onclick="closeMeetingOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeMeeting()">✕</button>
+
+    <div class="modal-eyebrow" data-fa="رزرو وقت — گوگل کلندر" data-en="Schedule — Google Calendar">رزرو وقت — گوگل کلندر</div>
+    <h3 data-fa="یک جلسه<br>بگذاریم" data-en="Let's set up<br>a meeting">یک جلسه<br>بگذاریم</h3>
+    <p class="modal-sub" data-fa="یک بازه زمانی انتخاب کنید و اطلاعات خود را وارد کنید. لینک گوگل کلندر برای شما ایجاد می‌شه." data-en="Choose a time slot and enter your details. A Google Calendar link will be generated for you.">
+      یک بازه زمانی انتخاب کنید و اطلاعات خود را وارد کنید. لینک گوگل کلندر برای شما ایجاد می‌شه.
+    </p>
+
+    <div class="time-slots" id="timeSlots">
+      <button class="time-slot" onclick="selectSlot(this)" data-duration="30">
+        <span data-fa="۳۰ دقیقه" data-en="30 min">۳۰ دقیقه</span><br>
+        <small data-fa="آشنایی اولیه" data-en="Intro Call">آشنایی اولیه</small>
+      </button>
+      <button class="time-slot" onclick="selectSlot(this)" data-duration="60">
+        <span data-fa="۶۰ دقیقه" data-en="60 min">۶۰ دقیقه</span><br>
+        <small data-fa="بررسی پروژه" data-en="Project Review">بررسی پروژه</small>
+      </button>
+      <button class="time-slot" onclick="selectSlot(this)" data-duration="90">
+        <span data-fa="۹۰ دقیقه" data-en="90 min">۹۰ دقیقه</span><br>
+        <small data-fa="مشاوره کامل" data-en="Full Consult">مشاوره کامل</small>
+      </button>
+      <button class="time-slot" onclick="selectSlot(this)" data-duration="120">
+        <span data-fa="۱۲۰ دقیقه" data-en="120 min">۱۲۰ دقیقه</span><br>
+        <small data-fa="ورکشاپ" data-en="Workshop">ورکشاپ</small>
+      </button>
+    </div>
+
+    <div class="meeting-form-inner">
+      <div>
+        <label class="form-label" data-fa="نام شما" data-en="Your Name">نام شما</label>
+        <input type="text" class="form-input" id="meetName" placeholder="" data-placeholder-fa="نام خود را وارد کنید" data-placeholder-en="Enter your name">
+      </div>
+      <div>
+        <label class="form-label" data-fa="ایمیل شما" data-en="Your Email">ایمیل شما</label>
+        <input type="email" class="form-input" id="meetEmail" placeholder="" data-placeholder-fa="ایمیل خود را وارد کنید" data-placeholder-en="Enter your email">
+      </div>
+      <div>
+        <label class="form-label" data-fa="موضوع جلسه" data-en="Meeting Topic">موضوع جلسه</label>
+        <input type="text" class="form-input" id="meetTopic" placeholder="" data-placeholder-fa="موضوع جلسه را بنویسید" data-placeholder-en="Describe the meeting topic">
+      </div>
+      <a href="#" class="gcal-link" id="gcalLink" onclick="openGoogleCalendar(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15.5 5H19a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3.5"/>
+          <rect x="8" y="2" width="8" height="5" rx="1"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span data-fa="افزودن به گوگل کلندر" data-en="Add to Google Calendar">افزودن به گوگل کلندر</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-name" data-fa="یوسف سادات فخر" data-en="Yusof Sadat Fakhr">یوسف سادات فخر</span>
+    <span class="footer-copy">© 2026 — <span data-fa="تمامی حقوق محفوظ است" data-en="All rights reserved">تمامی حقوق محفوظ است</span></span>
+  </div>
+  <div class="footer-right">
+    <a href="https://github.com/yusofsf" target="_blank" class="footer-link">GitHub</a>
+    <a href="https://linkedin.com/in/yusof-sadat-fakhr" target="_blank" class="footer-link">LinkedIn</a>
+    <a href="#hero" class="footer-link" data-fa="بالا ↑" data-en="Top ↑">بالا ↑</a>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 4 + 'px';
+    cursor.style.top = my - 4 + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 16 + 'px';
+    ring.style.top = ry - 16 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+      ring.style.marginLeft = '-8px';
+      ring.style.marginTop = '-8px';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+      ring.style.marginLeft = '0';
+      ring.style.marginTop = '0';
+    });
+  });
+
+  // Lang toggle
+  let lang = 'fa';
+
+  function toggleLang() {
+    lang = lang === 'fa' ? 'en' : 'fa';
+    const html = document.documentElement;
+    html.setAttribute('lang', lang);
+    html.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+    document.getElementById('langBtn').textContent = lang === 'fa' ? 'EN' : 'FA';
+
+    document.querySelectorAll('[data-fa]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+        el.innerHTML = val;
+      }
+    });
+
+    document.querySelectorAll('[data-placeholder-fa]').forEach(el => {
+      el.placeholder = el.getAttribute('data-placeholder-' + lang) || '';
+    });
+  }
+
+  // Meeting Modal
+  function openMeeting() {
+    document.getElementById('meetingModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    initSlots(); // make sure first slot is always selected & label updated
+  }
+
+  function closeMeeting() {
+    document.getElementById('meetingModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeMeetingOutside(e) {
+    if (e.target === document.getElementById('meetingModal')) closeMeeting();
+  }
+
+  function selectSlot(btn) {
+    document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // show selected duration in button label
+    const dur = parseInt(btn.getAttribute('data-duration'));
+    const gcalBtn = document.getElementById('gcalLink');
+    const label = gcalBtn.querySelector('span');
+    const txt = lang === 'fa'
+      ? `افزودن به گوگل کلندر — ${dur} دقیقه`
+      : `Add to Google Calendar — ${dur} min`;
+    label.textContent = txt;
+  }
+
+  // Auto-select first slot on open
+  function initSlots() {
+    const first = document.querySelector('.time-slot');
+    if (first) selectSlot(first);
+  }
+
+  function getSelectedDuration() {
+    const active = document.querySelector('.time-slot.active');
+    return active ? parseInt(active.getAttribute('data-duration')) : 30;
+  }
+
+  function openGoogleCalendar(e) {
+    e.preventDefault();
+
+    const name     = document.getElementById('meetName').value.trim()  || 'Guest';
+    const email    = document.getElementById('meetEmail').value.trim();
+    const topic    = document.getElementById('meetTopic').value.trim() || 'Meeting with Yusof';
+    const duration = getSelectedDuration(); // reads active slot: 30 / 60 / 90 / 120
+
+    // Round start time up to next 30-min block
+    const now  = new Date();
+    const ms30 = 30 * 60 * 1000;
+    const start = new Date(Math.ceil(now.getTime() / ms30) * ms30);
+    const end   = new Date(start.getTime() + duration * 60 * 1000);
+
+    // Google Calendar needs UTC format: YYYYMMDDTHHmmssZ
+    const fmtUTC = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    const details =
+      `جلسه با یوسف سادات فخر\nMeeting with Yusof Sadat Fakhr` +
+      `\n\nRequested by: ${name}` +
+      (email ? `\nEmail: ${email}` : '') +
+      `\nDuration: ${duration} min`;
+
+    const params = new URLSearchParams({
+      action:   'TEMPLATE',
+      text:     topic,
+      dates:    `${fmtUTC(start)}/${fmtUTC(end)}`,
+      details,
+      location: 'Google Meet / Online',
+      add:      'yusofsadat@gmail.com'
+    });
+
+    window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+  }
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate skill bars
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-width');
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skills-left, .skills-right').forEach(el => barObserver.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
